@@ -17,9 +17,7 @@ const AllDelivery = () => {
     const nPage = Math.ceil(deliveryLists.length / DeliveryItemPerPage)
     const numbers = [...Array(nPage + 1).keys()].slice(1)
 
-    function changeCPage(id) {
-        setCurrentPage(id)
-    }
+    
 
     return (
         <>
@@ -36,7 +34,7 @@ const AllDelivery = () => {
                     </thead>
                     <tbody>
                     {
-                        deliveryLists.map(dList => <tr key={dList.id}>
+                        DeliveryListItem.map(dList => <tr key={dList.id}>
                             <td className='text-center'>{dList.title}</td>
                             <td className='text-center'>{dList.price}</td>
                             <td className='text-center'>{dList.quantity}</td>
@@ -46,17 +44,37 @@ const AllDelivery = () => {
                     </tbody>
                 </table>
                 <ul className='pagination'>
+                    <li className='page-item'>
+                        <Link to="#" className='page-link' onClick={prePage}> Prev</Link>
+                    </li>
                     {
                         numbers.map((n, i) => (
-                            <li className='' key={i}>
-                                <Link to="#" onClick={changeCPage}>{n}</Link>
+                            <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
+                                <Link className='page-link' to="#" onClick={() => changeCPage(n)}>{n}</Link>
                             </li>
                         ))
                     }
+                    <li className='page-item'>
+                        <Link to="#" className='page-link' onClick={nextPage}> next</Link>
+                    </li>
                 </ul>
             </div>
         </>
     );
+    function prePage(id) {
+        if (currentPage !== firstIndex) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+
+    function changeCPage(id) {
+        setCurrentPage(id)
+    }
+    function nextPage(id) {
+        if (currentPage !== lastIndex) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
 };
 
 export default AllDelivery;
